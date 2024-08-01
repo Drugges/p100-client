@@ -111,5 +111,5 @@ const project: any = {
   ],
 };
 
-scene.renderProject(project);
+//scene.renderProject(project);
 

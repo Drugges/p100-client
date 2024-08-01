@@ -1,5 +1,3 @@
-import PScene from "p100-lib/src/PScene";
-
 import {
   Scene,
   PerspectiveCamera,
@@ -95,8 +93,8 @@ export default class GameScene {
       this.setHovered(null);
       return;
     }
-    if (object3D && object3D.userData) {
-      this.setHovered(object3D.userData);
+    if (object3D && object3D.userData.pnode) {
+      this.setHovered(object3D.userData.pnode);
     }
   }
 
@@ -162,20 +160,6 @@ export default class GameScene {
     // Render
     this.renderer!.render(this.scene!, this.camera!);
   };
-
-  renderProject(project: any) {
-    const pscene = new PScene(project, this.eventSystem);
-
-    const scene = this.scene;
-    for (const pnode of pscene.children) {
-      pnode.render();
-      scene.add(pnode.el!);
-    }
-
-    setTimeout(function(self: any) {
-      self.rendered = true;
-    }, 0, this);
-  }
 
   onWindowResize = () => {
     const w = window.innerWidth;
