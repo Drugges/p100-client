@@ -9,11 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "three": "^0.166.1"
+    "p100-lib": "~1.0.x"
   },
   "devDependencies": {
-    "@types/three": "^0.166.0",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10"
   }
 }
