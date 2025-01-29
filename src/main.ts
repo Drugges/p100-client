@@ -21,7 +21,6 @@ async function run() {
 }
 
 async function init() {
-  console.log("init()");
   document.addEventListener("click", run);
 }
 
