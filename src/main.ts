@@ -15,10 +15,12 @@ async function run() {
     div.parentElement!.removeChild(div);
   }
 
-  const paths = window.location.pathname.split("/");
+  const urlParams = new URLSearchParams(window.location.search);
 
-  //  const projectId = paths.length === 3 ? paths[1] : PROJECT_ID;
-  const language = paths.length === 2 ? parseInt(paths[1]) || 0 : 0;
+  const queryLanguage = urlParams.get("language");
+
+  const language = queryLanguage ? parseInt(queryLanguage) || 0 : 0;
+  console.log("language: ", language);
 
   const canvas = document.querySelector<HTMLCanvasElement>("#app")!;
   app = new App(canvas, API_URL, PROJECT_ID, language);
