@@ -1,4 +1,4 @@
-import './style.css'
+import "./style.css";
 
 import { App } from "p100-lib";
 
@@ -15,8 +15,13 @@ async function run() {
     div.parentElement!.removeChild(div);
   }
 
-  const canvas = document.querySelector<HTMLCanvasElement>('#app')!;
-  app = new App(canvas, API_URL, PROJECT_ID);
+  const paths = window.location.pathname.split("/");
+
+  //  const projectId = paths.length === 3 ? paths[1] : PROJECT_ID;
+  const language = paths.length === 2 ? parseInt(paths[1]) || 0 : 0;
+
+  const canvas = document.querySelector<HTMLCanvasElement>("#app")!;
+  app = new App(canvas, API_URL, PROJECT_ID, language);
   await app.init();
 }
 
