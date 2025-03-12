@@ -18,13 +18,40 @@ async function run() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const queryLanguage = urlParams.get("language");
-
+  const project = urlParams.get("project");
   const language = queryLanguage ? parseInt(queryLanguage) || 0 : 0;
-  console.log("language: ", language);
 
   const canvas = document.querySelector<HTMLCanvasElement>("#app")!;
-  app = new App(canvas, API_URL, PROJECT_ID, language);
+  app = new App(canvas, API_URL, project || PROJECT_ID, language);
   await app.init();
+
+  window.addEventListener("keydown", onKeyDown);
+}
+
+function onKeyDown(e: any) {
+  if (e.key === "e") {
+    console.log("Show event panel");
+    const panel = document.getElementById("event-panel")!;
+    panel.style.display = "inherit";
+    setTimeout(() => {
+      (document.getElementById("event-input") as any).focus();
+    }, 0);
+  } else if (e.key === "Enter") {
+    const value = (document.getElementById("event-input") as any).value;
+    if (value) {
+      const canvas = document.getElementById("app")!;
+      canvas.dispatchEvent(
+        new CustomEvent("external-event", {
+          detail: {
+            name: value,
+            args: "",
+          },
+        })
+      );
+    }
+    const panel = document.getElementById("event-panel")!;
+    panel.style.display = "none";
+  }
 }
 
 async function init() {

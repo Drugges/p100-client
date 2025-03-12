@@ -42,3 +42,11 @@ canvas {
   margin-top: 20%;
   font-size: 30px;
 }
+
+#event-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: none;
+}
