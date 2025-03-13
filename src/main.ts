@@ -54,8 +54,38 @@ function onKeyDown(e: any) {
   }
 }
 
+function msg(msg: string) {
+  const div = document.getElementById("click-msg");
+  div!.innerHTML = msg;
+}
+
 async function init() {
-  document.addEventListener("click", run);
+  // Get system details
+  const response = await fetch(`${API_URL}/system/client`);
+
+  if (!response.ok) {
+    msg("Failed to load system details");
+    return;
+  }
+
+  const {
+    system: { version },
+  } = await response.json();
+  console.log("version: ", version);
+
+  const browserVersion = import.meta.env.VITE_VERSION;
+
+  if (version === browserVersion) {
+    msg("Click to start");
+    document.addEventListener("click", run);
+  } else {
+    msg(
+      "You are using an old version (" +
+        browserVersion +
+        "), please clear your browser cache to get the latest version: " +
+        version
+    );
+  }
 }
 
 init();
