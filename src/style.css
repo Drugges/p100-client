@@ -17,6 +17,9 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
+  overflow: hidden;
+  touch-action: none; /* Important for disabling gestures */  
 }
 
 canvas {
@@ -32,6 +35,8 @@ canvas {
   padding: 0;
   margin: 0;
 
+  touch-action: none; /* Especially important for Safari */
+  
   &[data-hover] {
     cursor: pointer;
   }
