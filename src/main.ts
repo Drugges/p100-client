@@ -42,7 +42,7 @@ function onKeyDown(e: any) {
     if (value) {
       const canvas = document.getElementById("app")!;
       canvas.dispatchEvent(
-        new CustomEvent("p100-event", {
+        new CustomEvent("p100-in-event", {
           detail: {
             name: value,
             payload: "",
