@@ -72,6 +72,8 @@ async function init() {
     msg("Failed to load system details");
     return;
   }
+  const urlParams = new URLSearchParams(window.location.search);
+  const skipClick = !!urlParams.get("click");
 
   const {
     system: { version },
@@ -81,8 +83,12 @@ async function init() {
   const browserVersion = import.meta.env.VITE_VERSION;
 
   if (version === browserVersion) {
-    msg("Click to start");
-    document.addEventListener("click", run);
+    if (!skipClick) {
+      msg("Click to start");
+      document.addEventListener("click", run);
+    } else {
+      run();
+    }
   } else {
     msg(
       "You are using an old version (" +
