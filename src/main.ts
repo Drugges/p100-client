@@ -26,7 +26,7 @@ async function run() {
   await app.init();
 
   window.addEventListener("keydown", onKeyDown);
-  canvas.addEventListener("p100-event", onP100Event);
+  canvas.addEventListener("p100-out-event", onP100Event);
 }
 
 function onKeyDown(e: any) {
