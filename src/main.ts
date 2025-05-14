@@ -26,6 +26,7 @@ async function run() {
   await app.init();
 
   window.addEventListener("keydown", onKeyDown);
+  canvas.addEventListener("p100-event", onP100Event);
 }
 
 function onKeyDown(e: any) {
@@ -41,10 +42,10 @@ function onKeyDown(e: any) {
     if (value) {
       const canvas = document.getElementById("app")!;
       canvas.dispatchEvent(
-        new CustomEvent("external-event", {
+        new CustomEvent("p100-event", {
           detail: {
             name: value,
-            args: "",
+            payload: "",
           },
         })
       );
@@ -52,6 +53,10 @@ function onKeyDown(e: any) {
     const panel = document.getElementById("event-panel")!;
     panel.style.display = "none";
   }
+}
+
+function onP100Event(e: any) {
+  console.log("[P100-EVENT] ", e.detail);
 }
 
 function msg(msg: string) {
