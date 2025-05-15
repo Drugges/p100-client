@@ -19,7 +19,8 @@ body {
   padding: 0;
 
   overflow: hidden;
-  touch-action: none; /* Important for disabling gestures */  
+  /*touch-action: none; */
+  /* Important for disabling gestures */  
 }
 
 canvas {
@@ -35,7 +36,8 @@ canvas {
   padding: 0;
   margin: 0;
 
-  touch-action: none; /* Especially important for Safari */
+  touch-action: none;
+  /* Especially important for Safari */
   
   &[data-hover] {
     cursor: pointer;
