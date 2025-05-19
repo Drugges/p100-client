@@ -7,6 +7,14 @@ const PROJECT_ID = import.meta.env.VITE_PROJECT_ID;
 
 let app: App | null = null;
 
+/**
+ * Cleanup when Vite restarts
+ */
+if (import.meta.hot) {
+  import.meta.hot.accept();
+  import.meta.hot.dispose(dispose);
+}
+
 async function run() {
   document.removeEventListener("click", run);
 
@@ -21,12 +29,52 @@ async function run() {
   const project = urlParams.get("project");
   const language = queryLanguage ? parseInt(queryLanguage) || 0 : 0;
 
-  const canvas = document.querySelector<HTMLCanvasElement>("#app")!;
+  const canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
   app = new App(canvas, API_URL, project || PROJECT_ID, language);
   await app.init();
 
+  // Populate event dropdown
+  const dropdown = document.querySelector("#event-dropdown")!;
+  // Remove old events
+  while (dropdown.firstChild) {
+    dropdown.removeChild(dropdown.firstChild);
+  }
+
+  const events = app.getGlobalEvents();
+
+  // Populate the dropdown
+  events.forEach((event) => {
+    const option = document.createElement("option");
+    option.value = event._id.toString();
+    option.text = event.name;
+    dropdown.appendChild(option);
+  });
+
   window.addEventListener("keydown", onKeyDown);
-  canvas.addEventListener("p100-out-event", onP100Event);
+
+  app.addEventListener(onP100Event);
+
+  document.querySelector("#event-emit")?.addEventListener("click", emitEvent);
+}
+
+function dispose() {
+  console.log("[Client] dispose()");
+  app?.dispose();
+  app?.canvas.remove();
+  app = null;
+  window.removeEventListener("keydown", onKeyDown);
+}
+
+function emitEvent() {
+  const event = (document.getElementById("event-dropdown") as any).value;
+  const payload = (document.getElementById("event-payload") as any).value || "";
+
+  app?.dispatchEvent(event, payload);
+
+  const panel = document.getElementById("event-panel")!;
+  panel.style.display = "none";
 }
 
 function onKeyDown(e: any) {
@@ -34,29 +82,13 @@ function onKeyDown(e: any) {
     console.log("Show event panel");
     const panel = document.getElementById("event-panel")!;
     panel.style.display = "inherit";
-    setTimeout(() => {
-      (document.getElementById("event-input") as any).focus();
-    }, 0);
   } else if (e.key === "Enter") {
-    const value = (document.getElementById("event-input") as any).value;
-    if (value) {
-      const canvas = document.getElementById("app")!;
-      canvas.dispatchEvent(
-        new CustomEvent("p100-in-event", {
-          detail: {
-            name: value,
-            payload: "",
-          },
-        })
-      );
-    }
-    const panel = document.getElementById("event-panel")!;
-    panel.style.display = "none";
+    emitEvent();
   }
 }
 
-function onP100Event(e: any) {
-  console.log("[P100-EVENT] ", e.detail);
+function onP100Event(event: string, payload: string) {
+  console.log("[P100-EVENT] ", event, payload);
 }
 
 function msg(msg: string) {
