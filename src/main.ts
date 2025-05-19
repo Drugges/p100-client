@@ -18,9 +18,9 @@ if (import.meta.hot) {
 async function run() {
   document.removeEventListener("click", run);
 
-  const div = document.querySelector("#click-msg");
+  const div = document.querySelector<HTMLDivElement>("#click-msg");
   if (div) {
-    div.parentElement!.removeChild(div);
+    div.style.display = "none";
   }
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -65,6 +65,7 @@ function dispose() {
   app?.canvas.remove();
   app = null;
   window.removeEventListener("keydown", onKeyDown);
+  document.removeEventListener("click", run);
 }
 
 function emitEvent() {
@@ -92,8 +93,9 @@ function onP100Event(event: string, payload: string) {
 }
 
 function msg(msg: string) {
-  const div = document.getElementById("click-msg");
-  div!.innerHTML = msg;
+  const div = document.getElementById("click-msg")!;
+  div.innerHTML = msg;
+  div.style.display = "inherit";
 }
 
 async function init() {
