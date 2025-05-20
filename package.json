@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "p100-lib": "~1.0.x"
+    "p100-lib": "~100.0.x"
   },
   "devDependencies": {
     "typescript": "~5.6.2",
